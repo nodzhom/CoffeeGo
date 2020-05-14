@@ -7,3 +7,10 @@
 //
 
 import Foundation
+import MapKit
+
+struct Stadium {
+    var name: String
+    var latitude: CLLocationDegrees
+    var longitude: CLLocationDegrees
+}

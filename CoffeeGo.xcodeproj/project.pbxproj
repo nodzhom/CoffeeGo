@@ -7,23 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48769B9C2461805E0067AF99 /* StadiumsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48769B9B2461805E0067AF99 /* StadiumsModel.swift */; };
+		48769B9E2461C8F00067AF99 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48769B9D2461C8F00067AF99 /* NetworkManager.swift */; };
+		48769BA02461C9750067AF99 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48769B9F2461C9750067AF99 /* Secrets.swift */; };
+		48769BA22461CF3C0067AF99 /* CoffeeShopModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48769BA12461CF3C0067AF99 /* CoffeeShopModel.swift */; };
 		48BD4BE224617AF900D3BBB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD4BE124617AF900D3BBB4 /* AppDelegate.swift */; };
 		48BD4BE424617AF900D3BBB4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD4BE324617AF900D3BBB4 /* SceneDelegate.swift */; };
-		48BD4BE624617AF900D3BBB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD4BE524617AF900D3BBB4 /* ViewController.swift */; };
+		48BD4BE624617AF900D3BBB4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BD4BE524617AF900D3BBB4 /* MapViewController.swift */; };
 		48BD4BE924617AF900D3BBB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48BD4BE724617AF900D3BBB4 /* Main.storyboard */; };
 		48BD4BEB24617AFC00D3BBB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48BD4BEA24617AFC00D3BBB4 /* Assets.xcassets */; };
 		48BD4BEE24617AFC00D3BBB4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48BD4BEC24617AFC00D3BBB4 /* LaunchScreen.storyboard */; };
+		48D1F37A2465AB5600F76AFD /* CGTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D1F3782465AB5600F76AFD /* CGTableViewCell.swift */; };
+		48D1F37B2465AB5600F76AFD /* CGTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D1F3792465AB5600F76AFD /* CGTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		48769B9B2461805E0067AF99 /* StadiumsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StadiumsModel.swift; sourceTree = "<group>"; };
+		48769B9D2461C8F00067AF99 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		48769B9F2461C9750067AF99 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		48769BA12461CF3C0067AF99 /* CoffeeShopModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeShopModel.swift; sourceTree = "<group>"; };
 		48BD4BDE24617AF900D3BBB4 /* CoffeeGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoffeeGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48BD4BE124617AF900D3BBB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48BD4BE324617AF900D3BBB4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		48BD4BE524617AF900D3BBB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		48BD4BE524617AF900D3BBB4 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		48BD4BE824617AF900D3BBB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		48BD4BEA24617AFC00D3BBB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48BD4BED24617AFC00D3BBB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		48BD4BEF24617AFC00D3BBB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48D1F3782465AB5600F76AFD /* CGTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGTableViewCell.swift; sourceTree = "<group>"; };
+		48D1F3792465AB5600F76AFD /* CGTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,11 +70,17 @@
 			children = (
 				48BD4BE124617AF900D3BBB4 /* AppDelegate.swift */,
 				48BD4BE324617AF900D3BBB4 /* SceneDelegate.swift */,
-				48BD4BE524617AF900D3BBB4 /* ViewController.swift */,
+				48BD4BE524617AF900D3BBB4 /* MapViewController.swift */,
 				48BD4BE724617AF900D3BBB4 /* Main.storyboard */,
 				48BD4BEA24617AFC00D3BBB4 /* Assets.xcassets */,
 				48BD4BEC24617AFC00D3BBB4 /* LaunchScreen.storyboard */,
 				48BD4BEF24617AFC00D3BBB4 /* Info.plist */,
+				48769B9B2461805E0067AF99 /* StadiumsModel.swift */,
+				48769B9D2461C8F00067AF99 /* NetworkManager.swift */,
+				48769B9F2461C9750067AF99 /* Secrets.swift */,
+				48769BA12461CF3C0067AF99 /* CoffeeShopModel.swift */,
+				48D1F3782465AB5600F76AFD /* CGTableViewCell.swift */,
+				48D1F3792465AB5600F76AFD /* CGTableViewCell.xib */,
 			);
 			path = CoffeeGo;
 			sourceTree = "<group>";
@@ -126,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48BD4BEE24617AFC00D3BBB4 /* LaunchScreen.storyboard in Resources */,
+				48D1F37B2465AB5600F76AFD /* CGTableViewCell.xib in Resources */,
 				48BD4BEB24617AFC00D3BBB4 /* Assets.xcassets in Resources */,
 				48BD4BE924617AF900D3BBB4 /* Main.storyboard in Resources */,
 			);
@@ -138,7 +157,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48BD4BE624617AF900D3BBB4 /* ViewController.swift in Sources */,
+				48BD4BE624617AF900D3BBB4 /* MapViewController.swift in Sources */,
+				48769BA02461C9750067AF99 /* Secrets.swift in Sources */,
+				48769B9C2461805E0067AF99 /* StadiumsModel.swift in Sources */,
+				48769BA22461CF3C0067AF99 /* CoffeeShopModel.swift in Sources */,
+				48769B9E2461C8F00067AF99 /* NetworkManager.swift in Sources */,
+				48D1F37A2465AB5600F76AFD /* CGTableViewCell.swift in Sources */,
 				48BD4BE224617AF900D3BBB4 /* AppDelegate.swift in Sources */,
 				48BD4BE424617AF900D3BBB4 /* SceneDelegate.swift in Sources */,
 			);
