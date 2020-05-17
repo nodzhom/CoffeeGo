@@ -35,12 +35,15 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gdl-dB-PQr">
-                                <rect key="frame" x="324" y="521" width="30" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gdl-dB-PQr">
+                                <rect key="frame" x="364" y="64" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="XyR-6F-wwR"/>
+                                    <constraint firstAttribute="width" constant="40" id="Ydm-oF-vdt"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="tintColor" red="0.48627450979999998" green="0.40784313729999999" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" image="location.circle" catalog="system">
+                                <state key="normal" image="Current Location Button-60">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="bold"/>
                                 </state>
                                 <connections>
@@ -54,9 +57,11 @@
                             <constraint firstAttribute="bottom" secondItem="c8c-mL-CUx" secondAttribute="bottom" id="8DP-K3-Ojf"/>
                             <constraint firstItem="c8c-mL-CUx" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="8O0-OT-WEu"/>
                             <constraint firstItem="c8c-mL-CUx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="O6z-ql-WtR"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gdl-dB-PQr" secondAttribute="trailing" constant="10" id="Otf-N4-exv"/>
                             <constraint firstItem="5oI-jc-PRf" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="W7Y-4o-g0l"/>
                             <constraint firstItem="5oI-jc-PRf" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="XgB-cT-RRs"/>
                             <constraint firstAttribute="bottom" secondItem="5oI-jc-PRf" secondAttribute="bottom" id="czj-8e-7Tp"/>
+                            <constraint firstItem="gdl-dB-PQr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="tAV-Xg-aWb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -71,6 +76,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="location.circle" catalog="system" width="128" height="121"/>
+        <image name="Current Location Button-60" width="60" height="60"/>
     </resources>
 </document>

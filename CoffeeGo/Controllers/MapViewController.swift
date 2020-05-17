@@ -20,13 +20,6 @@ class MapViewController: UIViewController {
     let locationManager = CLLocationManager()
     let networkManager = NetworkManager()
     
-    //Dummy data
-    let stadiums = [Stadium(name: "Emirates Stadium", latitude: 51.5549, longitude: -0.108436),
-                    Stadium(name: "Stamford Bridge", latitude: 51.4816, longitude: -0.191034),
-                    Stadium(name: "White Hart Lane", latitude: 51.6033, longitude: -0.065684),
-                    Stadium(name: "Olympic Stadium", latitude: 51.5383, longitude: -0.016587),
-                    Stadium(name: "Old Trafford", latitude: 53.4631, longitude: -2.29139),
-                    Stadium(name: "Anfield", latitude: 53.4308, longitude: -2.96096)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,30 +32,25 @@ class MapViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        checkLocationServicesStatus()
+        
+        getCurrentLocation()
+    }
+
+    func checkLocationServicesStatus() {
         if CLLocationManager.locationServicesEnabled() {
             checkAuthorizationStatus()
         } else {
-            //show alert to prompt to turn it on
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Location Services", message: "Please enable location services to use this app", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(action)
+                
+                self.present(alert, animated: true)
+            }
+            
         }
-        
-        getCurrentLocation()
-        
-        //addStatidumsToMap(stadiums: stadiums)
-        
-        
-        //London
-        //let startingArea = CLLocationCoordinate2D(latitude: 51.4816, longitude: -0.191034)
-        
-        //Munich
-        //let startingArea = CLLocationCoordinate2D(latitude: 48.1351, longitude: 11.5820)
-        //let coordinateRegion = MKCoordinateRegion(center: startingArea, latitudinalMeters: 1000, longitudinalMeters: 1000)
-        
-        //mapView.setRegion(coordinateRegion, animated: true)
-        
-        
-        //self.networkManager.getCoffeeShopsAt(latitude: "51.4816", longitude: "-0.191034")
     }
-    
     
     func checkAuthorizationStatus() {
         switch CLLocationManager.authorizationStatus() {
@@ -79,7 +67,7 @@ class MapViewController: UIViewController {
             // Show an alert letting them know what’s up
             
         @unknown default:
-            fatalError("App crashed")
+            fatalError("Unknown fatal error")
         }
     }
     
@@ -106,38 +94,18 @@ class MapViewController: UIViewController {
             guard let unwrappedResponse = response else { return }
 
             for route in unwrappedResponse.routes {
+                
+                let mapEdgeInsets = UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40)
+                
                 self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: mapEdgeInsets, animated: true)
                 
-                
-                //testing making the table view smaller
-//                self.tableView.translatesAutoresizingMaskIntoConstraints = false
-//
-//                UIView.animate(withDuration: 2) {
-//                    NSLayoutConstraint.activate([
-//                        self.tableView.heightAnchor.constraint(equalToConstant: 100)
-//                    ])
-//                }
-                
-                
-
             }
         }
-
     }
     
-    //dummy func
-    func addStatidumsToMap(stadiums: [Stadium]) {
-        for stadium in stadiums {
-            let annotations = MKPointAnnotation()
-            annotations.title = stadium.name
-            annotations.coordinate = CLLocationCoordinate2D(latitude: stadium.latitude, longitude: stadium.longitude)
-            mapView.addAnnotation(annotations)
-            
-        }
-    }
-    
-    func addCoffeeShopsToMap(coffeeShops:[Result]) {
+    func addCoffeeShopsToMap(coffeeShops: [Result]) {
+        
         DispatchQueue.main.async {
             for coffeeShop in coffeeShops {
                 
@@ -148,10 +116,7 @@ class MapViewController: UIViewController {
                 self.mapView.addAnnotation(annotation)
             }
         }
-        
     }
-    
-    
 }
 
 //MARK: - NetworkManager Function
@@ -173,7 +138,6 @@ extension MapViewController: CLLocationManagerDelegate {
         if let location = locations.first {
                 let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1250, longitudinalMeters: 1250)
                 self.mapView.setRegion(region, animated: true)
-                //self.mapView.setCenter(location.coordinate, animated: true)
                 self.networkManager.getCoffeeShopsAt(latitude: String(location.coordinate.latitude), longitude: String(location.coordinate.longitude))
                 print("This is your current location: lat:\(location.coordinate.latitude) lng:\(location.coordinate.longitude)")
             
@@ -185,6 +149,7 @@ extension MapViewController: CLLocationManagerDelegate {
     }
     
 }
+
 //MARK: - MapKit Delegate Functions
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -199,7 +164,7 @@ extension MapViewController: MKMapViewDelegate {
         
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-            //annotationView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            annotationView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             annotationView!.canShowCallout = true
         }
         else {
@@ -212,7 +177,22 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-
+        
+        var shopURL = URL(string: "")
+        
+        for venue in venues {
+            if venue.venue.name == view.annotation?.title {
+                shopURL = URL(string: venue.snippets.items[0].detail?.object.canonicalUrl ?? "www.google.com")
+            }
+        }
+        
+        let safariVC = SFSafariViewController(url: shopURL!)
+        safariVC.preferredControlTintColor = .brown
+        self.present(safariVC, animated: true, completion: nil)
+        
+        
+        
+        
         
     }
     
@@ -225,37 +205,53 @@ extension MapViewController: MKMapViewDelegate {
 }
 
 //MARK: - UITableView Functions
-extension MapViewController: UITableViewDelegate, UITableViewDataSource {
+extension MapViewController: UITableViewDelegate, UITableViewDataSource, CGTableViewCellDelegate {
+    
+    func actionButtonTapped(at index: IndexPath) {
+        let selectedCafeLocation = CLLocationCoordinate2D(latitude: venues[index.row].venue.location.lat, longitude: venues[index.row].venue.location.lng)
+        print(selectedCafeLocation)
+        requestDirectionsTo(location: selectedCafeLocation)
+        
+        let selectedAnnotation = self.mapView.annotations.firstIndex(where: {$0.title == venues[index.row].venue.name})!
+        self.mapView.selectAnnotation(mapView.annotations[selectedAnnotation], animated: true)
+        tableView.selectRow(at: index, animated: true, scrollPosition: .top)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return venues.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         tableView.rowHeight = 70
         
         let nib = UINib(nibName: "CGTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "CGTableViewCell")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CGTableViewCell") as! CGTableViewCell
+        cell.delegate = self
+        cell.indexPath = indexPath
         cell.nameLabel.text = venues[indexPath.row].venue.name
         cell.addressLabel.text = venues[indexPath.row].venue.location.address ?? "No adress"
         cell.distanceLabel.text = "\(String(venues[indexPath.row].venue.location.distance)) m"
         
-        let distanceInMinutesAndSecond = (Double(venues[indexPath.row].venue.location.distance) / 1.4) / 60
-        cell.timeLabel.text = "\(String(format: "%.1f", distanceInMinutesAndSecond)) min"
+        let distanceInMinutesAndSeconds = (Double(venues[indexPath.row].venue.location.distance) / 1.4) / 60
+        cell.timeLabel.text = "\(String(format: "%.1f", distanceInMinutesAndSeconds)) min"
+        
+
         return cell
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCafeLocation = CLLocationCoordinate2D(latitude: venues[indexPath.row].venue.location.lat, longitude: venues[indexPath.row].venue.location.lng)
-//        let cafeRegion = MKCoordinateRegion(center: selectedCafeLocation, latitudinalMeters: 250, longitudinalMeters: 250)
-//        self.mapView.setRegion(cafeRegion, animated: true)
+        let cafeRegion = MKCoordinateRegion(center: selectedCafeLocation, latitudinalMeters: 300, longitudinalMeters: 300)
+        self.mapView.setRegion(cafeRegion, animated: true)
         
         let selectedAnnotation = self.mapView.annotations.firstIndex(where: {$0.title == venues[indexPath.row].venue.name})!
         self.mapView.selectAnnotation(mapView.annotations[selectedAnnotation], animated: true)
-        
-        requestDirectionsTo(location: selectedCafeLocation)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         
         //debug
         print("tableview selection \(venues[indexPath.row].venue.name)")

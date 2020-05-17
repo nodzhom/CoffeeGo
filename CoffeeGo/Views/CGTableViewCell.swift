@@ -9,6 +9,10 @@
 import UIKit
 import SafariServices
 
+protocol CGTableViewCellDelegate {
+    func actionButtonTapped(at index: IndexPath)
+}
+
 class CGTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
@@ -18,8 +22,12 @@ class CGTableViewCell: UITableViewCell {
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var capsuleView: UIView!
     
+    var delegate: CGTableViewCellDelegate!
+    var indexPath: IndexPath!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         capsuleView.layer.cornerRadius = 10
         actionButton.layer.cornerRadius = 10
         
@@ -32,7 +40,7 @@ class CGTableViewCell: UITableViewCell {
     }
     
     @IBAction func actionButtonTapped(_ sender: UIButton) {
-         
+         self.delegate?.actionButtonTapped(at: indexPath)
       
     }
     
