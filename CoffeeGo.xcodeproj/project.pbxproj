@@ -70,13 +70,21 @@
 				48F3C86F246DD622001B359D /* Views */,
 				48F3C870246DD62D001B359D /* Controllers */,
 				48F3C871246DD66D001B359D /* Managers */,
+				48C7E14F247420EC00439E7D /* Secrets */,
 				48BD4BE124617AF900D3BBB4 /* AppDelegate.swift */,
 				48BD4BE324617AF900D3BBB4 /* SceneDelegate.swift */,
-				48769B9F2461C9750067AF99 /* Secrets.swift */,
 				48BD4BEA24617AFC00D3BBB4 /* Assets.xcassets */,
 				48BD4BEF24617AFC00D3BBB4 /* Info.plist */,
 			);
 			path = CoffeeGo;
+			sourceTree = "<group>";
+		};
+		48C7E14F247420EC00439E7D /* Secrets */ = {
+			isa = PBXGroup;
+			children = (
+				48769B9F2461C9750067AF99 /* Secrets.swift */,
+			);
+			path = Secrets;
 			sourceTree = "<group>";
 		};
 		48F3C86E246DD614001B359D /* Models */ = {
