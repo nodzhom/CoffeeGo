@@ -15,14 +15,17 @@ class MapViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var bottomView: UIView!
     
     var venues = [Result]()
     let locationManager = CLLocationManager()
     let networkManager = NetworkManager()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bottomView.layer.cornerRadius = 10
+        tableView.layer.cornerRadius = 10
         
         networkManager.delegate = self
         
@@ -36,7 +39,7 @@ class MapViewController: UIViewController {
         
         getCurrentLocation()
     }
-
+    
     func checkLocationServicesStatus() {
         if CLLocationManager.locationServicesEnabled() {
             checkAuthorizationStatus()
@@ -44,11 +47,10 @@ class MapViewController: UIViewController {
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: "Location Services", message: "Please enable location services to use this app", preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-                alert.addAction(action)
                 
+                alert.addAction(action)
                 self.present(alert, animated: true)
             }
-            
         }
     }
     
@@ -80,11 +82,9 @@ class MapViewController: UIViewController {
     }
     
     func requestDirectionsTo(location: CLLocationCoordinate2D) {
-        
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: mapView.userLocation.coordinate, addressDictionary: nil))
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: location, addressDictionary: nil))
-        //request.requestsAlternateRoutes = true
         request.transportType = .walking
 
         let directions = MKDirections(request: request)
@@ -94,12 +94,10 @@ class MapViewController: UIViewController {
             guard let unwrappedResponse = response else { return }
 
             for route in unwrappedResponse.routes {
-                
                 let mapEdgeInsets = UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40)
                 
                 self.mapView.addOverlay(route.polyline)
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, edgePadding: mapEdgeInsets, animated: true)
-                
             }
         }
     }
@@ -108,7 +106,6 @@ class MapViewController: UIViewController {
         
         DispatchQueue.main.async {
             for coffeeShop in coffeeShops {
-                
                 let annotation = MKPointAnnotation()
                 annotation.title = coffeeShop.venue.name
                 annotation.subtitle = coffeeShop.venue.location.address
@@ -119,7 +116,7 @@ class MapViewController: UIViewController {
     }
 }
 
-//MARK: - NetworkManager Function
+//MARK: - NetworkManager Delegate Functions
 extension MapViewController: NetworkManagerDelegate {
     func didGetCoffeeShops(networkManager: NetworkManager, venues: [Result]) {
         DispatchQueue.main.async {
@@ -127,9 +124,7 @@ extension MapViewController: NetworkManagerDelegate {
             self.tableView.reloadData()
             self.addCoffeeShopsToMap(coffeeShops: venues)
         }
-        
     }
-    
 }
 
 //MARK: - CoreLocation Delegate Functions
@@ -139,35 +134,27 @@ extension MapViewController: CLLocationManagerDelegate {
                 let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1250, longitudinalMeters: 1250)
                 self.mapView.setRegion(region, animated: true)
                 self.networkManager.getCoffeeShopsAt(latitude: String(location.coordinate.latitude), longitude: String(location.coordinate.longitude))
-                print("This is your current location: lat:\(location.coordinate.latitude) lng:\(location.coordinate.longitude)")
-            
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Something went wrong with location manager")
     }
-    
 }
 
 //MARK: - MapKit Delegate Functions
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
         
-        guard !annotation.isKind(of: MKUserLocation.self) else {
-            
-            return nil
-        }
         let annotationIdentifier = "AnnotationIdentifier"
-        
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
         
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
             annotationView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             annotationView!.canShowCallout = true
-        }
-        else {
+        } else {
             annotationView!.annotation = annotation
         }
         
@@ -177,9 +164,8 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        
         var shopURL = URL(string: "")
-        
+    
         for venue in venues {
             if venue.venue.name == view.annotation?.title {
                 shopURL = URL(string: venue.snippets.items[0].detail?.object.canonicalUrl ?? "www.google.com")
@@ -189,11 +175,6 @@ extension MapViewController: MKMapViewDelegate {
         let safariVC = SFSafariViewController(url: shopURL!)
         safariVC.preferredControlTintColor = .brown
         self.present(safariVC, animated: true, completion: nil)
-        
-        
-        
-        
-        
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -201,15 +182,12 @@ extension MapViewController: MKMapViewDelegate {
         renderer.strokeColor = UIColor.systemBlue
         return renderer
     }
-    
 }
 
 //MARK: - UITableView Functions
 extension MapViewController: UITableViewDelegate, UITableViewDataSource, CGTableViewCellDelegate {
-    
     func actionButtonTapped(at index: IndexPath) {
         let selectedCafeLocation = CLLocationCoordinate2D(latitude: venues[index.row].venue.location.lat, longitude: venues[index.row].venue.location.lng)
-        print(selectedCafeLocation)
         requestDirectionsTo(location: selectedCafeLocation)
         
         let selectedAnnotation = self.mapView.annotations.firstIndex(where: {$0.title == venues[index.row].venue.name})!
@@ -221,9 +199,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, CGTable
         return venues.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         tableView.rowHeight = 70
         
         let nib = UINib(nibName: "CGTableViewCell", bundle: nil)
@@ -238,10 +214,8 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, CGTable
         
         let distanceInMinutesAndSeconds = (Double(venues[indexPath.row].venue.location.distance) / 1.4) / 60
         cell.timeLabel.text = "\(String(format: "%.1f", distanceInMinutesAndSeconds)) min"
-        
-
+    
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -252,9 +226,5 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource, CGTable
         let selectedAnnotation = self.mapView.annotations.firstIndex(where: {$0.title == venues[indexPath.row].venue.name})!
         self.mapView.selectAnnotation(mapView.annotations[selectedAnnotation], animated: true)
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        
-        //debug
-        print("tableview selection \(venues[indexPath.row].venue.name)")
-        print("annotation selection\(self.mapView.annotations[indexPath.row].title)")
     }
 }

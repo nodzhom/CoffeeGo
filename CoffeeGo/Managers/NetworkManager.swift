@@ -15,20 +15,14 @@ protocol NetworkManagerDelegate {
 class NetworkManager {
     
     var delegate: NetworkManagerDelegate?
-    
-    let baseURL = "https://api.foursquare.com/v2/search/recommendations?limit=10&section=coffee&v=20180323&limit=10"
-    
-    let location = "&ll=48.1351,11.5820"
+
     let clientID = Secrets.clientID
     let clientSecret = Secrets.clientSecret
     
     
     func getCoffeeShopsAt(latitude: String, longitude: String) {
-        
         let endpoint = "https://api.foursquare.com/v2/search/recommendations?limit=20"+"&ll=\(latitude)"+","+"\(longitude)"+"&section=coffee&v=20180323"+clientID+clientSecret
-        //let endpoint = baseURL+"&ll=\(latitude)"+","+"\(longitude)"+clientID+clientSecret
         if let url = URL(string: endpoint) {
-            
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: url) { (data, response, error) in
                 
@@ -47,14 +41,8 @@ class NetworkManager {
                         }
                     }
                 }
-                
-                
             }
             task.resume()
         }
-        
-        
     }
-    
-    
 }
